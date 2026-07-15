@@ -27,7 +27,21 @@ import pandas as pd
 import mysql.connector
 import plotly.express as px
 from datetime import datetime
-from config import DB_CONFIG
+import streamlit as st
+
+try:
+    # Running on Streamlit Cloud — read from secrets
+    DB_CONFIG = {
+        "host": st.secrets["mysql"]["host"],
+        "port": st.secrets["mysql"]["port"],
+        "user": st.secrets["mysql"]["user"],
+        "password": st.secrets["mysql"]["password"],
+        "database": st.secrets["mysql"]["database"],
+        "ssl_disabled": False,
+    }
+except (KeyError, FileNotFoundError):
+    # Running locally — read from config.py
+    from config import DB_CONFIG
 
 # ---------- Page setup ----------
 st.set_page_config(
